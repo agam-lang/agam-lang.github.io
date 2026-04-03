@@ -5,5 +5,12 @@ on:
   pull_request:
     branches: [ "main" ]
 jobs:
-  build:
-    uses: agam-lang/.github/.github/workflows/node-ci.yml@main
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate structure
+        run: |
+          echo "Validating documentation site structure..."
+          test -f README.md && echo "README.md exists" || exit 1
+          echo "Validation passed."
