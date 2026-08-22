@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agam Playground — Hardware-Accelerated Systems & AI Language</title>
+  <meta name="description" content="Interactive browser playground, live compiler, and documentation tour for Agam — the modern AI-native hardware-accelerated systems language.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <!-- Navigation Header -->
+  <header class="top-nav" id="main-nav">
+    <div class="nav-brand">
+      <div class="logo-mark">
+        <span class="logo-glyph">⏣</span>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">Agam</span>
+        <span class="brand-tag">Playground &amp; Tour</span>
+      </div>
+    </div>
+
+    <div class="nav-controls">
+      <div class="dropdown-container">
+        <label for="example-select" class="sr-only">Select Example</label>
+        <select id="example-select" class="nav-select">
+          <option value="hello">✨ Hello, World!</option>
+          <option value="tensor">🧠 Shape-Aware Tensors &amp; ML</option>
+          <option value="gpu">⚡ Hardware Tile Matmul (@gpu)</option>
+          <option value="probabilistic">🎲 Bayesian Inference &amp; MCMC</option>
+          <option value="ui">🎨 Declarative UI &amp; A2UI Protocol</option>
+          <option value="effects">🪄 Algebraic Effects &amp; Handlers</option>
+        </select>
+      </div>
+
+      <button id="btn-run" class="btn btn-primary" title="Compile and run code in browser (Ctrl+Enter)">
+        <span class="btn-icon">▶</span> Run
+      </button>
+
+      <button id="btn-share" class="btn btn-secondary" title="Share playground link">
+        <span class="btn-icon">🔗</span> Share
+      </button>
+
+      <a href="https://github.com/agam-lang/agam" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" title="GitHub Repository">
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Grid Workspace -->
+  <main class="workspace-layout" id="workspace">
+    <!-- Left Sidebar: Tour of Agam & Docs -->
+    <aside class="sidebar" id="tour-sidebar">
+      <div class="sidebar-header">
+        <h2>Tour of Agam</h2>
+        <span class="badge">v0.1.0-alpha</span>
+      </div>
+
+      <nav class="tour-nav" id="tour-nav">
+        <button class="tour-item active" data-lesson="intro">
+          <span class="tour-step">1</span>
+          <div class="tour-meta">
+            <span class="tour-title">Language Introduction</span>
+            <span class="tour-desc">Memory safety, zero-cost abstractions</span>
+          </div>
+        </button>
+
+        <button class="tour-item" data-lesson="tensors">
+          <span class="tour-step">2</span>
+          <div class="tour-meta">
+            <span class="tour-title">Tensors &amp; Autodiff</span>
+            <span class="tour-desc">Baur-Strassen AD, shape inference</span>
+          </div>
+        </button>
+
+        <button class="tour-item" data-lesson="gpu">
+          <span class="tour-step">3</span>
+          <div class="tour-meta">
+            <span class="tour-title">GPU &amp; NPU Compute</span>
+            <span class="tour-desc">Cooperative matrix, SPIR-V</span>
+          </div>
+        </button>
+
+        <button class="tour-item" data-lesson="bayesian">
+          <span class="tour-step">4</span>
+          <div class="tour-meta">
+            <span class="tour-title">Probabilistic ML</span>
+            <span class="tour-desc">Sample, observe, MCMC &amp; VI</span>
+          </div>
+        </button>
+
+        <button class="tour-item" data-lesson="ui">
+          <span class="tour-step">5</span>
+          <div class="tour-meta">
+            <span class="tour-title">Declarative &amp; A2UI</span>
+            <span class="tour-desc">Bento Box, reactive virtual DOM</span>
+          </div>
+        </button>
+      </nav>
+
+      <div class="tour-guide-card" id="tour-guide">
+        <h3 id="guide-title">Welcome to Agam</h3>
+        <p id="guide-body">
+          Agam is a high-performance, hardware-accelerated systems and AI programming language.
+          Write zero-cost abstractions with first-class tensor operations, automatic differentiation, and multi-vendor GPU pipelines.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Center Pane: Interactive Code Editor -->
+    <section class="editor-pane" id="editor-section">
+      <div class="pane-header">
+        <div class="tab active">
+          <span class="tab-dot"></span>
+          <span>main.agm</span>
+        </div>
+        <div class="editor-status">
+          <span id="compiler-status" class="status-indicator ready">Compiler Ready (WASM)</span>
+        </div>
+      </div>
+
+      <div class="editor-wrapper">
+        <textarea id="code-editor" spellcheck="false" placeholder="Write Agam code here..."></textarea>
+      </div>
+    </section>
+
+    <!-- Right Pane: Terminal Output & Live Visualizer -->
+    <section class="output-pane" id="output-section">
+      <div class="pane-header">
+        <div class="output-tabs">
+          <button class="out-tab active" id="tab-console">Console Output</button>
+          <button class="out-tab" id="tab-preview">UI &amp; Visualizer</button>
+        </div>
+        <button id="btn-clear" class="btn btn-sm btn-ghost">Clear</button>
+      </div>
+
+      <div class="output-container">
+        <pre id="console-output" class="console-box"><code>[Agam Runtime v0.1.0]
+Ready. Press "Run" or Ctrl+Enter to execute.</code></pre>
+
+        <div id="visual-preview" class="preview-box hidden">
+          <div class="preview-placeholder">
+            <span>Visual UI tree or Tensor heatmaps will render here.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
