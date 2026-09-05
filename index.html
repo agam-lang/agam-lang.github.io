@@ -43,7 +43,7 @@
         <a href="#about" class="nav-link">What is Agam</a>
         <a href="#roadmap" class="nav-link">Roadmap</a>
         <a href="#features" class="nav-link">Pillars</a>
-        <a href="#playground" class="nav-link highlight">Playground</a>
+        <a href="#compiler" class="nav-link highlight">Online Compiler</a>
         <a href="#docs" class="nav-link">Documentation</a>
         <a href="#benchmarks" class="nav-link">Benchmarks</a>
         <a href="#ecosystem" class="nav-link">Ecosystem</a>
@@ -79,8 +79,8 @@
       </p>
 
       <div class="hero-actions">
-        <a href="#playground" class="btn btn-primary btn-large">
-          <span class="btn-icon">⚡</span> Try Playground
+        <a href="#compiler" class="btn btn-primary btn-large">
+          <span class="btn-icon">⚡</span> Online Compiler
         </a>
         <a href="#docs" class="btn btn-secondary btn-large">
           <span class="btn-icon">📖</span> Read Quickstart
@@ -420,136 +420,117 @@
     </div>
   </section>
 
-  <!-- ── Interactive Playground Section ── -->
-  <section class="section-container playground-section" id="playground">
+  <!-- ── Online Compiler Section (Programiz-Style) ── -->
+  <section class="section-container compiler-section" id="compiler">
     <div class="section-header">
-      <span class="section-tag">Live Compiler Sandbox</span>
-      <h2 class="section-title">Interactive Playground &amp; Language Tour</h2>
-      <p class="section-desc">Test-drive Agam directly in your browser. Fully powered by a real-time Lexer, Parser, and AST execution engine with line-accurate diagnostics.</p>
+      <span class="section-tag">Interactive Workspace</span>
+      <h2 class="section-title">Agam Online Compiler</h2>
+      <p class="section-desc">Write, compile, and run native Agam code directly in your browser with real-time AST execution and line-accurate diagnostics.</p>
     </div>
 
-    <!-- Playground Workspace -->
-    <div class="workspace-card" id="playground-workspace">
-      <!-- Toolbar -->
-      <div class="playground-toolbar">
-        <div class="toolbar-left">
-          <label for="example-select" class="toolbar-label">Lesson:</label>
-          <select id="example-select" class="nav-select">
-            <option value="hello">✨ 01 • Hello, World!</option>
-            <option value="tensor">🧠 02 • Shape-Aware Tensors &amp; ML</option>
-            <option value="gpu">⚡ 03 • Hardware Tile Matmul (@gpu)</option>
-            <option value="probabilistic">🎲 04 • Bayesian Inference &amp; MCMC</option>
-            <option value="ui">🎨 05 • Declarative UI &amp; A2UI</option>
-            <option value="effects">🪄 06 • Algebraic Effects &amp; Handlers</option>
-            <option value="benchmarks">📊 07 • Benchmark Suite &amp; Matrix</option>
-          </select>
+    <!-- Compiler Workspace Card -->
+    <div class="compiler-workspace">
+      <!-- Programiz-style Top Action Toolbar -->
+      <div class="compiler-toolbar">
+        <div class="toolbar-group-left">
+          <div class="compiler-brand-tag">
+            <span class="compiler-dot-indicator"></span>
+            <span class="compiler-label">Agam v0.1.0</span>
+          </div>
+          <div class="template-selector-wrapper">
+            <label for="template-select" class="sr-only">Code Template</label>
+            <select id="template-select" class="compiler-select" title="Choose template">
+              <option value="hello">📄 01 • Hello World &amp; Reducer</option>
+              <option value="tensor">🧠 02 • Shape-Aware Tensors &amp; ML</option>
+              <option value="gpu">⚡ 03 • Hardware Tile Matmul (@gpu)</option>
+              <option value="probabilistic">🎲 04 • Bayesian Inference &amp; MCMC</option>
+              <option value="ui">🎨 05 • Declarative UI &amp; A2UI</option>
+              <option value="effects">🪄 06 • Algebraic Effects &amp; Handlers</option>
+              <option value="benchmarks">📊 07 • Benchmark Suite &amp; Matrix</option>
+            </select>
+          </div>
         </div>
 
-        <div class="toolbar-right">
-          <button id="btn-run" class="btn btn-primary" title="Compile and run code (Ctrl+Enter)">
-            <span class="btn-icon">▶</span> Run
+        <div class="toolbar-group-right">
+          <button id="btn-run-compiler" class="btn btn-run-primary" title="Run code (Ctrl + Enter)">
+            <span class="run-triangle">▶</span>
+            <span>Run</span>
+            <kbd class="shortcut-key">Ctrl+Enter</kbd>
           </button>
-          <button id="btn-share" class="btn btn-secondary" title="Share playground link">
-            <span class="btn-icon">🔗</span> Share
+          <button id="btn-reset-code" class="btn btn-icon-action" title="Reset to template default">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+            </svg>
+            <span>Reset</span>
           </button>
-          <button id="btn-clear" class="btn btn-ghost" title="Clear console output">Clear</button>
+          <button id="btn-copy-code" class="btn btn-icon-action" title="Copy code to clipboard">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+            </svg>
+            <span>Copy</span>
+          </button>
+          <button id="btn-share-code" class="btn btn-icon-action" title="Share permalink">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+            </svg>
+            <span>Share</span>
+          </button>
+          <button id="btn-clear-terminal" class="btn btn-icon-action" title="Clear terminal output">
+            <span>Clear</span>
+          </button>
         </div>
       </div>
 
-      <!-- Main Layout -->
-      <div class="workspace-grid">
-        <!-- Tour Navigation Column (7 fully aligned lessons) -->
-        <aside class="tour-column">
-          <div class="tour-nav" id="tour-nav">
-            <button class="tour-item active" data-lesson="hello">
-              <span class="tour-step">1</span>
-              <div class="tour-meta">
-                <span class="tour-title">Language Introduction</span>
-                <span class="tour-desc">Zero-cost abstractions, hello</span>
-              </div>
-            </button>
-            <button class="tour-item" data-lesson="tensor">
-              <span class="tour-step">2</span>
-              <div class="tour-meta">
-                <span class="tour-title">Tensors &amp; Autodiff</span>
-                <span class="tour-desc">Baur-Strassen AD, shapes</span>
-              </div>
-            </button>
-            <button class="tour-item" data-lesson="gpu">
-              <span class="tour-step">3</span>
-              <div class="tour-meta">
-                <span class="tour-title">GPU &amp; NPU Compute</span>
-                <span class="tour-desc">Cooperative matrix, SPIR-V</span>
-              </div>
-            </button>
-            <button class="tour-item" data-lesson="probabilistic">
-              <span class="tour-step">4</span>
-              <div class="tour-meta">
-                <span class="tour-title">Probabilistic ML</span>
-                <span class="tour-desc">Sample, observe, MCMC</span>
-              </div>
-            </button>
-            <button class="tour-item" data-lesson="ui">
-              <span class="tour-step">5</span>
-              <div class="tour-meta">
-                <span class="tour-title">Declarative A2UI</span>
-                <span class="tour-desc">Bento Box virtual DOM</span>
-              </div>
-            </button>
-            <button class="tour-item" data-lesson="effects">
-              <span class="tour-step">6</span>
-              <div class="tour-meta">
-                <span class="tour-title">Algebraic Effects</span>
-                <span class="tour-desc">Perform, handle, resume</span>
-              </div>
-            </button>
-            <button class="tour-item" data-lesson="benchmarks">
-              <span class="tour-step">7</span>
-              <div class="tour-meta">
-                <span class="tour-title">Benchmark Suite</span>
-                <span class="tour-desc">Agam vs Clang vs Rust</span>
-              </div>
-            </button>
-          </div>
-
-          <div class="tour-guide-card" id="tour-guide">
-            <h4 id="guide-title">Welcome to Agam</h4>
-            <p id="guide-body">Agam combines high-level ergonomics with low-level systems control. Write native AI architectures with compile-time mathematical guarantees.</p>
-          </div>
-        </aside>
-
-        <!-- Editor Pane -->
-        <section class="editor-column">
-          <div class="pane-tab-header">
-            <div class="tab-item active">
-              <span class="tab-dot"></span>
+      <!-- 50/50 Split View (Editor & Terminal) -->
+      <div class="compiler-split-view">
+        <!-- Editor Pane (Left) -->
+        <div class="editor-pane">
+          <div class="pane-header">
+            <div class="file-tab active">
+              <svg class="file-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
               <span>main.agm</span>
             </div>
-            <span id="compiler-status" class="status-indicator ready">Compiler Ready (AST Engine)</span>
-          </div>
-          <div class="editor-wrapper">
-            <textarea id="code-editor" spellcheck="false" placeholder="Write Agam code here..."></textarea>
-          </div>
-        </section>
-
-        <!-- Console / Preview Pane -->
-        <section class="output-column">
-          <div class="pane-tab-header">
-            <div class="output-tabs">
-              <button class="out-tab active" id="tab-console">Console Output</button>
-              <button class="out-tab" id="tab-preview">UI &amp; Visualizer</button>
+            <div class="editor-meta">
+              <span id="compiler-status-indicator" class="status-badge ready">● Ready</span>
             </div>
           </div>
-          <div class="output-wrapper">
-            <pre id="console-output" class="console-box"><code>[Agam Runtime v0.1.0]
-Ready. Press "Run" or Ctrl+Enter to execute.</code></pre>
-            <div id="visual-preview" class="preview-box hidden">
+
+          <div class="editor-body">
+            <div class="line-numbers-gutter" id="line-numbers" aria-hidden="true">1</div>
+            <textarea id="compiler-textarea" class="code-textarea" spellcheck="false" placeholder="Write Agam code here..."></textarea>
+          </div>
+        </div>
+
+        <!-- Terminal / Console Pane (Right) -->
+        <div class="terminal-pane">
+          <div class="pane-header terminal-header">
+            <div class="terminal-tabs">
+              <button class="terminal-tab-btn active" id="term-tab-output">Output</button>
+              <button class="terminal-tab-btn" id="term-tab-ast">AST Viewer</button>
+              <button class="terminal-tab-btn" id="term-tab-ui">UI Preview</button>
+            </div>
+            <div class="terminal-meta">
+              <span id="exec-time-pill" class="exec-time-pill">0.0 ms</span>
+            </div>
+          </div>
+
+          <div class="terminal-body">
+            <pre id="terminal-stdout" class="terminal-stdout"><code>[Agam Compiler v0.1.0-alpha]
+Ready. Press "Run" or press Ctrl+Enter to compile and execute.</code></pre>
+            <pre id="terminal-ast" class="terminal-ast hidden"><code>// AST viewer: Press Run to inspect parsed AST</code></pre>
+            <div id="terminal-ui" class="terminal-ui hidden">
               <div class="preview-placeholder">
-                <span>Visual UI tree or Tensor heatmaps will render here.</span>
+                <span>UI visualizer output renders here when running UI code.</span>
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </section>

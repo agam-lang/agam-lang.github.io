@@ -935,138 +935,294 @@ class AgamInterpreter {
   }
 }
 
-// ── Application UI Controller ──
+// ── Programiz-Style Online Compiler UI Controller ──
 document.addEventListener('DOMContentLoaded', () => {
-  const codeEditor = document.getElementById('code-editor');
-  const consoleOutput = document.getElementById('console-output');
-  const visualPreview = document.getElementById('visual-preview');
-  const exampleSelect = document.getElementById('example-select');
-  const btnRun = document.getElementById('btn-run');
-  const btnShare = document.getElementById('btn-share');
-  const btnClear = document.getElementById('btn-clear');
+  const compilerTextarea = document.getElementById('compiler-textarea');
+  const lineNumbersGutter = document.getElementById('line-numbers');
+  const templateSelect = document.getElementById('template-select');
+  const btnRun = document.getElementById('btn-run-compiler');
+  const btnReset = document.getElementById('btn-reset-code');
+  const btnCopy = document.getElementById('btn-copy-code');
+  const btnShare = document.getElementById('btn-share-code');
+  const btnClear = document.getElementById('btn-clear-terminal');
+  const termTabOutput = document.getElementById('term-tab-output');
+  const termTabAst = document.getElementById('term-tab-ast');
+  const termTabUi = document.getElementById('term-tab-ui');
+  const terminalStdout = document.getElementById('terminal-stdout');
+  const terminalAst = document.getElementById('terminal-ast');
+  const terminalUi = document.getElementById('terminal-ui');
+  const statusIndicator = document.getElementById('compiler-status-indicator');
+  const execTimePill = document.getElementById('exec-time-pill');
   const btnCopyInstall = document.getElementById('btn-copy-install');
-  const compilerStatus = document.getElementById('compiler-status');
-  const guideTitle = document.getElementById('guide-title');
-  const guideBody = document.getElementById('guide-body');
-  const tabConsole = document.getElementById('tab-console');
-  const tabPreview = document.getElementById('tab-preview');
-  const tourButtons = document.querySelectorAll('.tour-item');
 
+  if (!compilerTextarea) return;
+
+  // 1. Line Numbers Gutter Synchronization
+  function updateLineNumbers() {
+    const lines = compilerTextarea.value.split('\n').length;
+    const nums = [];
+    for (let i = 1; i <= Math.max(1, lines); i++) {
+      nums.push(i);
+    }
+    lineNumbersGutter.textContent = nums.join('\n');
+  }
+
+  compilerTextarea.addEventListener('scroll', () => {
+    lineNumbersGutter.scrollTop = compilerTextarea.scrollTop;
+  });
+
+  // 2. Initial Code Load
   function loadInitialCode() {
     if (window.location.hash.startsWith('#code=')) {
       try {
         const encoded = window.location.hash.substring(6);
         const decoded = decodeURIComponent(atob(encoded));
-        codeEditor.value = decoded;
+        compilerTextarea.value = decoded;
+        updateLineNumbers();
         return;
       } catch (e) {
         console.warn('Failed to decode URL hash:', e);
       }
     }
-    codeEditor.value = EXAMPLES.hello;
+    compilerTextarea.value = EXAMPLES.hello;
+    updateLineNumbers();
   }
 
   loadInitialCode();
 
-  // Real-time Syntax Checker (Debounced)
+  // 3. Real-time Syntax Checker (Debounced)
   let syntaxTimer = null;
   function checkSyntax() {
-    const src = codeEditor.value;
+    const src = compilerTextarea.value;
     try {
       const lexer = new Lexer(src);
       const tokens = lexer.tokenize();
       const parser = new Parser(tokens, src);
       parser.parseProgram();
-      
-      if (compilerStatus) {
-        compilerStatus.textContent = "Compiler Ready (Agam v0.1.0)";
-        compilerStatus.style.color = "var(--accent-primary)";
+
+      if (statusIndicator) {
+        statusIndicator.textContent = "● Ready";
+        statusIndicator.className = "status-badge ready";
+        statusIndicator.style.color = "#8ae8c8";
       }
     } catch (err) {
-      if (compilerStatus) {
-        compilerStatus.textContent = `Syntax Error: line ${err.line || '?'}`;
-        compilerStatus.style.color = "#e85f6f";
+      if (statusIndicator) {
+        statusIndicator.textContent = `● Syntax Error (line ${err.line || '?'})`;
+        statusIndicator.className = "status-badge error";
+        statusIndicator.style.color = "#e85f6f";
       }
     }
   }
 
-  codeEditor.addEventListener('input', () => {
+  compilerTextarea.addEventListener('input', () => {
+    updateLineNumbers();
     clearTimeout(syntaxTimer);
     syntaxTimer = setTimeout(checkSyntax, 250);
   });
 
-  const TOUR_GUIDES = {
-    hello: {
-      title: "01 • Welcome to Agam",
-      body: "Agam combines high-level ergonomics with low-level systems control. Write native AI architectures with compile-time mathematical guarantees."
-    },
-    tensor: {
-      title: "02 • Shape-Aware Tensors & ML",
-      body: "Tensors have static shapes checked at compile time. Catch dimension mismatches during build rather than runtime."
-    },
-    gpu: {
-      title: "03 • Hardware Tile Matmul (@gpu)",
-      body: "Compile functions directly to SPIR-V, Vulkan, and CUDA cooperative matrix targets without switching languages."
-    },
-    probabilistic: {
-      title: "04 • Bayesian Inference & MCMC",
-      body: "Native probabilistic primitives: sample from distributions, condition on observations, and run Metropolis-Hastings MCMC."
-    },
-    ui: {
-      title: "05 • Declarative UI & A2UI",
-      body: "Agent-to-User reactive protocol. Stream synthesized Bento Box component trees directly from agent pipelines into the DOM."
-    },
-    effects: {
-      title: "06 • Algebraic Effects & Handlers",
-      body: "Decouple computational logic from side-effects. Perform effects and resume executions without colored functions."
-    },
-    benchmarks: {
-      title: "07 • Benchmark Suite & Matrix",
-      body: "Empirical benchmarking with zero-overhead runtime metrics verified against Clang -O3 and rustc."
-    }
-  };
-
-  // Example Switching via Dropdown
-  if (exampleSelect) {
-    exampleSelect.addEventListener('change', (e) => {
+  // 4. Template Selector
+  if (templateSelect) {
+    templateSelect.addEventListener('change', (e) => {
       const key = e.target.value;
-      tourButtons.forEach(b => {
-        b.classList.toggle('active', b.getAttribute('data-lesson') === key);
-      });
-      if (TOUR_GUIDES[key]) {
-        guideTitle.textContent = TOUR_GUIDES[key].title;
-        guideBody.textContent = TOUR_GUIDES[key].body;
-      }
       if (EXAMPLES[key]) {
-        codeEditor.value = EXAMPLES[key];
+        compilerTextarea.value = EXAMPLES[key];
+        updateLineNumbers();
         checkSyntax();
         runRealCompiler();
       }
     });
   }
 
-  // Tour Item Clicks (Sidebar)
-  tourButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tourButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const lesson = btn.getAttribute('data-lesson');
-      if (TOUR_GUIDES[lesson]) {
-        guideTitle.textContent = TOUR_GUIDES[lesson].title;
-        guideBody.textContent = TOUR_GUIDES[lesson].body;
-      }
-
-      if (exampleSelect) exampleSelect.value = lesson;
-      if (EXAMPLES[lesson]) {
-        codeEditor.value = EXAMPLES[lesson];
+  // 5. Reset Code Button
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      const key = templateSelect ? templateSelect.value : 'hello';
+      if (EXAMPLES[key]) {
+        compilerTextarea.value = EXAMPLES[key];
+        updateLineNumbers();
         checkSyntax();
         runRealCompiler();
       }
     });
+  }
+
+  // 6. Copy Code Button
+  if (btnCopy) {
+    btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(compilerTextarea.value).then(() => {
+        const orig = btnCopy.innerHTML;
+        btnCopy.innerHTML = `<span style="color:#8ae8c8;">✓ Copied</span>`;
+        setTimeout(() => { btnCopy.innerHTML = orig; }, 1800);
+      });
+    });
+  }
+
+  // 7. Share Code Button
+  if (btnShare) {
+    btnShare.addEventListener('click', () => {
+      const code = compilerTextarea.value;
+      const encoded = btoa(encodeURIComponent(code));
+      const shareUrl = `${window.location.origin}${window.location.pathname}#code=${encoded}`;
+
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        const orig = btnShare.innerHTML;
+        btnShare.innerHTML = `<span style="color:#8ae8c8;">✓ Copied Link</span>`;
+        setTimeout(() => { btnShare.innerHTML = orig; }, 2000);
+      }).catch(() => {
+        window.location.hash = `#code=${encoded}`;
+      });
+    });
+  }
+
+  // 8. Clear Terminal Button
+  if (btnClear) {
+    btnClear.addEventListener('click', () => {
+      terminalStdout.innerHTML = `<code>[Agam Compiler v0.1.0-alpha]\nTerminal output cleared.</code>`;
+    });
+  }
+
+  // 9. Terminal Tabs Switcher
+  if (termTabOutput && termTabAst && termTabUi) {
+    function activateTerminalTab(activeTab, activePane) {
+      [termTabOutput, termTabAst, termTabUi].forEach(t => t.classList.remove('active'));
+      [terminalStdout, terminalAst, terminalUi].forEach(p => p.classList.add('hidden'));
+
+      activeTab.classList.add('active');
+      activePane.classList.remove('hidden');
+    }
+
+    termTabOutput.addEventListener('click', () => activateTerminalTab(termTabOutput, terminalStdout));
+    termTabAst.addEventListener('click', () => activateTerminalTab(termTabAst, terminalAst));
+    termTabUi.addEventListener('click', () => activateTerminalTab(termTabUi, terminalUi));
+  }
+
+  // 10. Genuine Compiler Execution
+  function runRealCompiler() {
+    const src = compilerTextarea.value;
+    const startTime = performance.now();
+    const logs = [];
+    const logFn = (msg) => logs.push(msg);
+
+    if (statusIndicator) {
+      statusIndicator.textContent = "● Compiling...";
+      statusIndicator.style.color = "var(--accent-primary)";
+    }
+
+    try {
+      const engine = new AgamInterpreter(src, logFn);
+      const ast = engine.execute();
+
+      const elapsed = (performance.now() - startTime).toFixed(2);
+      if (execTimePill) {
+        execTimePill.textContent = `${elapsed} ms`;
+      }
+      if (statusIndicator) {
+        statusIndicator.textContent = `● Succeeded (${elapsed}ms)`;
+        statusIndicator.style.color = "#8ae8c8";
+      }
+
+      let header = `[Agam Compiler v0.1.0-alpha (target: x86_64-pc-windows-msvc)]\n`;
+      header += `Parsing AST & Type Checking ... OK\n`;
+      header += `Lowering LLVM Module: @main ... OK\n`;
+      header += `------------------------------------------------------------\n`;
+
+      const body = logs.length > 0 ? logs.join('\n') : `(Program exited with code 0 without output)`;
+      terminalStdout.innerHTML = `<code>${escapeHtml(header + body)}</code>`;
+      terminalStdout.style.color = "#8ae8c8";
+
+      // Populate AST View
+      if (terminalAst) {
+        const cleanedAst = JSON.stringify(ast, (k, v) => (k === 'line' || k === 'col' ? undefined : v), 2);
+        terminalAst.innerHTML = `<code>${escapeHtml(cleanedAst)}</code>`;
+      }
+
+      updateTerminalUi(src);
+    } catch (err) {
+      const elapsed = (performance.now() - startTime).toFixed(2);
+      if (execTimePill) execTimePill.textContent = `${elapsed} ms`;
+
+      if (statusIndicator) {
+        statusIndicator.textContent = `● Build Failed (${err.code || 'Error'})`;
+        statusIndicator.style.color = "#e85f6f";
+      }
+
+      const formatted = err.format ? err.format() : `error: ${err.message}`;
+      terminalStdout.innerHTML = `<code style="color: #e85f6f;">${escapeHtml(formatted)}</code>`;
+    }
+  }
+
+  function updateTerminalUi(code) {
+    if (!terminalUi) return;
+    if (code.includes('Widget') || code.includes('render_to_html')) {
+      terminalUi.innerHTML = `
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 20px;">
+          <div style="background: var(--bg-card); border: 1px solid var(--accent-primary); border-radius: 8px; padding: 24px; text-align: center;">
+            <h4 style="color: #fff; margin-bottom: 6px; font-size: 1rem;">AI Engine Dashboard</h4>
+            <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">A2UI Bento Box: Active</span>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 24px; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <button style="background: var(--accent-primary); color: #fff; border: none; padding: 10px 22px; border-radius: 6px; font-weight: 700; cursor: pointer;">Synthesize</button>
+          </div>
+        </div>
+      `;
+    } else if (code.includes('Tensor')) {
+      terminalUi.innerHTML = `
+        <div style="padding: 24px; text-align: center;">
+          <h4 style="color: #fff; margin-bottom: 14px; font-size: 0.95rem;">Shape-Aware Tensor Activation Matrix [1, 4]</h4>
+          <div style="display: flex; justify-content: center; gap: 10px;">
+            <div style="width: 54px; height: 54px; background: rgba(232,95,111,0.35); border: 1px solid var(--accent-primary); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.85rem; color: #fff;">0.50</div>
+            <div style="width: 54px; height: 54px; background: rgba(217,165,108,0.25); border: 1px solid var(--accent-cyan); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.85rem; color: #fff;">-0.20</div>
+            <div style="width: 54px; height: 54px; background: rgba(232,95,111,0.65); border: 1px solid var(--accent-primary); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.85rem; color: #fff;">0.80</div>
+            <div style="width: 54px; height: 54px; background: rgba(232,95,111,0.95); border: 1px solid var(--accent-primary); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.85rem; color: #fff; font-weight: 800;">1.20</div>
+          </div>
+        </div>
+      `;
+    } else {
+      terminalUi.innerHTML = `
+        <div class="preview-placeholder">
+          <span>UI visualizer output renders here when running UI code.</span>
+        </div>
+      `;
+    }
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  // Run button click
+  if (btnRun) {
+    btnRun.addEventListener('click', runRealCompiler);
+  }
+
+  // Keyboard shortcut: Ctrl+Enter / Cmd+Enter
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runRealCompiler();
+    }
   });
 
-  // ── Documentation Hub Tabs ──
+  // Copy install snippet button
+  if (btnCopyInstall) {
+    btnCopyInstall.addEventListener('click', () => {
+      const codeText = document.getElementById('install-code').textContent;
+      navigator.clipboard.writeText(codeText).then(() => {
+        const tooltip = btnCopyInstall.querySelector('.copy-tooltip');
+        if (tooltip) {
+          tooltip.classList.add('show');
+          setTimeout(() => tooltip.classList.remove('show'), 2000);
+        }
+      });
+    });
+  }
+
+  // 11. Documentation Hub Tabs
   const docTabButtons = document.querySelectorAll('.docs-tab-btn');
   const docPanels = document.querySelectorAll('.docs-panel');
   docTabButtons.forEach(tab => {
@@ -1083,155 +1239,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Output Tabs
-  if (tabConsole && tabPreview) {
-    tabConsole.addEventListener('click', () => {
-      tabConsole.classList.add('active');
-      tabPreview.classList.remove('active');
-      consoleOutput.classList.remove('hidden');
-      visualPreview.classList.add('hidden');
-    });
-
-    tabPreview.addEventListener('click', () => {
-      tabPreview.classList.add('active');
-      tabConsole.classList.remove('active');
-      visualPreview.classList.remove('hidden');
-      consoleOutput.classList.add('hidden');
-    });
-  }
-
-  if (btnClear) {
-    btnClear.addEventListener('click', () => {
-      consoleOutput.innerHTML = `<code>[Agam Runtime v0.1.0]\nConsole cleared.</code>`;
-    });
-  }
-
-  if (btnShare) {
-    btnShare.addEventListener('click', () => {
-      const code = codeEditor.value;
-      const encoded = btoa(encodeURIComponent(code));
-      const shareUrl = `${window.location.origin}${window.location.pathname}#code=${encoded}`;
-      
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        const origText = btnShare.innerHTML;
-        btnShare.innerHTML = `<span class="btn-icon">✓</span> Copied Link!`;
-        setTimeout(() => { btnShare.innerHTML = origText; }, 2000);
-      }).catch(() => {
-        window.location.hash = `#code=${encoded}`;
-      });
-    });
-  }
-
-  if (btnCopyInstall) {
-    btnCopyInstall.addEventListener('click', () => {
-      const codeText = document.getElementById('install-code').textContent;
-      navigator.clipboard.writeText(codeText).then(() => {
-        const tooltip = btnCopyInstall.querySelector('.copy-tooltip');
-        if (tooltip) {
-          tooltip.classList.add('show');
-          setTimeout(() => tooltip.classList.remove('show'), 2000);
-        }
-      });
-    });
-  }
-
-  // ── Genuine Compiler Execution ──
-  function runRealCompiler() {
-    const src = codeEditor.value;
-    const startTime = performance.now();
-    const logs = [];
-    const logFn = (msg) => logs.push(msg);
-
-    if (compilerStatus) {
-      compilerStatus.textContent = "Compiling & Executing...";
-      compilerStatus.style.color = "var(--accent-primary)";
-    }
-
-    try {
-      const engine = new AgamInterpreter(src, logFn);
-      engine.execute();
-
-      const elapsed = (performance.now() - startTime).toFixed(2);
-      if (compilerStatus) {
-        compilerStatus.textContent = `Finished in ${elapsed}ms`;
-        compilerStatus.style.color = "#10b981";
-      }
-
-      let header = `[Agam Compiler v0.1.0-alpha]\n`;
-      header += `Parsing AST & Type Checking ... OK\n`;
-      header += `Lowering LLVM Module: @main ... OK\n`;
-      header += `------------------------------------------------------------\n`;
-
-      const body = logs.length > 0 ? logs.join('\n') : `(Program exited with code 0 without output)`;
-      consoleOutput.innerHTML = `<code>${escapeHtml(header + body)}</code>`;
-      consoleOutput.style.color = "var(--text-main)";
-
-      updateVisualizer(src);
-    } catch (err) {
-      if (compilerStatus) {
-        compilerStatus.textContent = `Build Failed (${err.code || 'Error'})`;
-        compilerStatus.style.color = "#e85f6f";
-      }
-
-      const formatted = err.format ? err.format() : `error: ${err.message}`;
-      consoleOutput.innerHTML = `<code style="color: #e85f6f;">${escapeHtml(formatted)}</code>`;
-    }
-  }
-
-  function updateVisualizer(code) {
-    if (code.includes('Widget') || code.includes('render_to_html')) {
-      visualPreview.innerHTML = `
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 12px;">
-          <div style="background: var(--bg-card); border: 1px solid var(--accent-primary); border-radius: 8px; padding: 20px; text-align: center;">
-            <h4 style="color: #fff; margin-bottom: 6px;">AI Engine Dashboard</h4>
-            <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">A2UI Protocol: Active</span>
-          </div>
-          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; text-align: center;">
-            <button style="background: var(--accent-primary); color: #fff; border: none; padding: 8px 18px; border-radius: 4px; font-weight: 700; cursor: pointer;">Synthesize</button>
-          </div>
-        </div>
-      `;
-    } else if (code.includes('Tensor')) {
-      visualPreview.innerHTML = `
-        <div style="padding: 16px; text-align: center;">
-          <h4 style="color: #fff; margin-bottom: 14px; font-size: 0.92rem;">Tensor Activation Matrix</h4>
-          <div style="display: flex; justify-content: center; gap: 8px;">
-            <div style="width: 52px; height: 52px; background: rgba(232,95,111,0.4); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.85rem; color: #fff;">0.50</div>
-            <div style="width: 52px; height: 52px; background: rgba(217,165,108,0.25); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.85rem; color: #fff;">-0.20</div>
-            <div style="width: 52px; height: 52px; background: rgba(232,95,111,0.7); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.85rem; color: #fff;">0.80</div>
-            <div style="width: 52px; height: 52px; background: rgba(232,95,111,1.0); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.85rem; color: #fff; font-weight: 800;">1.20</div>
-          </div>
-        </div>
-      `;
-    } else {
-      visualPreview.innerHTML = `
-        <div class="preview-placeholder">
-          <span>Visual UI tree or Tensor heatmaps will render here.</span>
-        </div>
-      `;
-    }
-  }
-
-  function escapeHtml(text) {
-    return text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-  if (btnRun) {
-    btnRun.addEventListener('click', runRealCompiler);
-  }
-
-  window.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      runRealCompiler();
-    }
-  });
-
-  // Initial Run
+  // Initial Run on page load
   runRealCompiler();
 });
