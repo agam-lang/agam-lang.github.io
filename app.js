@@ -163,11 +163,7 @@ class AgamError extends Error {
     const lines = this.source.split('\n');
     const errLine = lines[this.line - 1] || "";
     const pointer = ' '.repeat(Math.max(0, this.col - 1)) + '^';
-    return `error[${this.code}]: ${this.message}
-  --> main.agm:${this.line}:${this.col}
-   |
-${String(this.line).padStart(3, ' ')} | ${errLine}
-   | ${pointer} ${this.message}`;
+    return `error[${this.code}]: ${this.message}\n  --> main.agam:${this.line}:${this.col}\n   |\n${String(this.line).padStart(3, ' ')} | ${errLine}\n   | ${pointer} ${this.message}`;
   }
 }
 
