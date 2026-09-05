@@ -18,7 +18,7 @@ fn main() {
         sum = sum + i;
         i = i + 1;
     }
-    println("Sum(0..9) = {}", sum);
+    println("Sum(0..9) = ", sum);
 }
 `,
 
@@ -729,16 +729,20 @@ class AgamInterpreter {
     const env = {
       println: (fmt, ...args) => {
         let str = String(fmt);
-        let argIdx = 0;
-        str = str.replace(/{:?\??}/g, () => {
-          if (argIdx < args.length) {
-            const val = args[argIdx++];
-            if (Array.isArray(val)) return JSON.stringify(val);
-            if (val && typeof val === 'object' && val.toString) return val.toString();
-            return String(val);
-          }
-          return '{}';
-        });
+        if (args.length > 0 && !str.includes('{}') && !str.includes('{:?}')) {
+          str = [fmt, ...args].map(a => (Array.isArray(a) ? JSON.stringify(a) : (a && a.toString ? a.toString() : String(a)))).join('');
+        } else {
+          let argIdx = 0;
+          str = str.replace(/{:?\??}/g, () => {
+            if (argIdx < args.length) {
+              const val = args[argIdx++];
+              if (Array.isArray(val)) return JSON.stringify(val);
+              if (val && typeof val === 'object' && val.toString) return val.toString();
+              return String(val);
+            }
+            return '{}';
+          });
+        }
         this.outputFn(str);
       },
       print_int: (n) => this.outputFn(String(n)),
