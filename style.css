@@ -1,24 +1,24 @@
-/* ── Modern Design System Tokens (Omarchy-Compliant • Zero Glow • Flat 2D) ── */
+/* ── Sakura Design System Tokens (Omarchy Flat • Zero Glow • 2D Vector) ── */
 :root {
-  --bg-base: #08080c;
-  --bg-surface: #101016;
-  --bg-card: #14141e;
-  --bg-card-hover: #1a1a26;
-  --bg-editor: #0c0c12;
+  --bg-base: #0d0509;
+  --bg-surface: #180a12;
+  --bg-card: #220e1a;
+  --bg-card-hover: #2e1323;
+  --bg-editor: #090306;
   
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-active: #ff7a00;
-  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-color: rgba(240, 234, 237, 0.12);
+  --border-active: #e85f6f;
+  --border-subtle: rgba(240, 234, 237, 0.05);
 
-  --text-main: #f3f4f6;
-  --text-muted: #9ca3af;
-  --text-dim: #6b7280;
+  --text-main: #f0eaed;
+  --text-muted: #c6afba;
+  --text-dim: #8a7681;
 
-  /* Strictly Flat Accent Pair: Molten Amber & Spectral Cyan */
-  --accent-primary: #ff7a00;
-  --accent-primary-hover: #e66e00;
-  --accent-cyan: #00d4ff;
-  --accent-cyan-hover: #00bce3;
+  /* Sakura Flat Accent Pair: Blossom Crimson & Autumn Gold */
+  --accent-primary: #e85f6f;
+  --accent-primary-hover: #cf4f5e;
+  --accent-cyan: #d9a56c;
+  --accent-cyan-hover: #c49159;
 
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -32,111 +32,6 @@
   --transition-normal: 0.25s ease;
 }
 
-/* ── Omarchy Theme Matrix ── */
-body.theme-amethyst {
-  --bg-base: #11111b;
-  --bg-surface: #181825;
-  --bg-card: #1e1e2e;
-  --bg-card-hover: #26263a;
-  --bg-editor: #11111b;
-  --text-main: #cdd6f4;
-  --text-muted: #a6adc8;
-  --border-color: rgba(205, 214, 244, 0.12);
-  --border-active: #cba6f7;
-  --accent-primary: #cba6f7;
-  --accent-primary-hover: #b48ead;
-  --accent-cyan: #94e2d5;
-}
-
-body.theme-purple-haze {
-  --bg-base: #020007;
-  --bg-surface: #0a0614;
-  --bg-card: #130c24;
-  --bg-card-hover: #1c1236;
-  --bg-editor: #020007;
-  --text-main: #ffffff;
-  --text-muted: #b895dd;
-  --border-color: rgba(184, 149, 221, 0.15);
-  --border-active: #9c6cd0;
-  --accent-primary: #9c6cd0;
-  --accent-primary-hover: #8355b5;
-  --accent-cyan: #b895dd;
-}
-
-body.theme-tokyo-night {
-  --bg-base: #1a1b26;
-  --bg-surface: #1f2335;
-  --bg-card: #24283b;
-  --bg-card-hover: #2f354d;
-  --bg-editor: #16161e;
-  --text-main: #c0caf5;
-  --text-muted: #9aa5ce;
-  --border-color: rgba(192, 202, 245, 0.12);
-  --border-active: #7aa2f7;
-  --accent-primary: #f7768e;
-  --accent-primary-hover: #e06c75;
-  --accent-cyan: #7aa2f7;
-}
-
-body.theme-archwave {
-  --bg-base: #1a0d2e;
-  --bg-surface: #241240;
-  --bg-card: #2d1752;
-  --bg-card-hover: #3b1e6b;
-  --bg-editor: #150a26;
-  --text-main: #ffffff;
-  --text-muted: #d4a5ff;
-  --border-color: rgba(212, 165, 255, 0.15);
-  --border-active: #ff6ec7;
-  --accent-primary: #ff6ec7;
-  --accent-primary-hover: #e05bb0;
-  --accent-cyan: #5ffbf1;
-}
-
-body.theme-ghost-pastel {
-  --bg-base: #070506;
-  --bg-surface: #120e10;
-  --bg-card: #1c1719;
-  --bg-card-hover: #262023;
-  --bg-editor: #070506;
-  --text-main: #ffffff;
-  --text-muted: #b37580;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --border-active: #e095b5;
-  --accent-primary: #e095b5;
-  --accent-primary-hover: #c9829e;
-  --accent-cyan: #979fec;
-}
-
-body.theme-moodpeak {
-  --bg-base: #181c22;
-  --bg-surface: #20252e;
-  --bg-card: #282f3a;
-  --bg-card-hover: #333c4a;
-  --bg-editor: #14171c;
-  --text-main: #e0e6ed;
-  --text-muted: #9aa8b8;
-  --border-color: rgba(224, 230, 237, 0.12);
-  --border-active: #ff7b92;
-  --accent-primary: #ff7b92;
-  --accent-primary-hover: #e6687e;
-  --accent-cyan: #4ecdc4;
-}
-
-body.theme-sakura {
-  --bg-base: #0d0509;
-  --bg-surface: #180a12;
-  --bg-card: #220e1a;
-  --bg-card-hover: #2e1323;
-  --bg-editor: #090306;
-  --text-main: #f0eaed;
-  --text-muted: #c6afba;
-  --border-color: rgba(240, 234, 237, 0.12);
-  --border-active: #e85f6f;
-  --accent-primary: #e85f6f;
-  --accent-primary-hover: #cf4f5e;
-  --accent-cyan: #d9a56c;
-}
 
 /* ── Reset & Document Base ── */
 *, *::before, *::after {

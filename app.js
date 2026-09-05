@@ -153,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const consoleOutput = document.getElementById('console-output');
   const visualPreview = document.getElementById('visual-preview');
   const exampleSelect = document.getElementById('example-select');
-  const themeSelect = document.getElementById('theme-select');
   const btnRun = document.getElementById('btn-run');
   const btnShare = document.getElementById('btn-share');
   const btnClear = document.getElementById('btn-clear');
@@ -181,27 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadInitialCode();
-
-  // ── Theme Switcher with Persistence ──
-  function applyTheme(themeName) {
-    const themes = ['amethyst', 'purple-haze', 'tokyo-night', 'archwave', 'ghost-pastel', 'moodpeak', 'sakura'];
-    themes.forEach(t => document.body.classList.remove(`theme-${t}`));
-
-    if (themeName && themeName !== 'default') {
-      document.body.classList.add(`theme-${themeName}`);
-    }
-    localStorage.setItem('agam_preferred_theme', themeName);
-    if (themeSelect) themeSelect.value = themeName;
-  }
-
-  const savedTheme = localStorage.getItem('agam_preferred_theme') || 'default';
-  applyTheme(savedTheme);
-
-  if (themeSelect) {
-    themeSelect.addEventListener('change', (e) => {
-      applyTheme(e.target.value);
-    });
-  }
 
   // ── Example Switching ──
   if (exampleSelect) {
