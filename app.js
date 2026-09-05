@@ -10,10 +10,14 @@ const EXAMPLES = {
 // Memory safety, zero-cost hardware abstractions, and native AI integration.
 
 fn main() {
-    let message = "Hello from Agam on WebAssembly!";
-    println(message);
+    println("Hello from Agam!");
 
-    let sum = (0..10).reduce(0, |acc, x| acc + x);
+    let mut sum = 0;
+    let mut i = 0;
+    while i < 10 {
+        sum = sum + i;
+        i = i + 1;
+    }
     println("Sum(0..9) = {}", sum);
 }
 `,
@@ -432,12 +436,33 @@ class Parser {
       this.consume();
       this.match('KEYWORD', 'mut');
       const name = this.expect('IDENT', null, "expected variable name after 'let'").value;
+      if (this.match('SYMBOL', ':')) {
+        while (this.peek().type !== 'SYMBOL' || this.peek().value !== '=') {
+          if (this.peek().type === 'EOF' || this.peek().value === ';') break;
+          this.consume();
+        }
+      }
       let init = null;
       if (this.match('SYMBOL', '=')) {
         init = this.parseExpression();
       }
       this.expect('SYMBOL', ';', "expected ';' after variable declaration");
       return { type: 'LetStatement', name, init };
+    }
+
+    if (tok.type === 'IDENT' && this.tokens[this.pos + 1] && this.tokens[this.pos + 1].value === '=') {
+      const name = this.consume().value;
+      this.consume(); // '='
+      const expr = this.parseExpression();
+      this.expect('SYMBOL', ';', "expected ';' after assignment");
+      return { type: 'AssignmentStatement', name, expr };
+    }
+
+    if (tok.type === 'KEYWORD' && tok.value === 'while') {
+      this.consume();
+      const test = this.parseExpression();
+      const body = this.parseBlock();
+      return { type: 'WhileStatement', test, body };
     }
 
     if (tok.type === 'KEYWORD' && tok.value === 'handle') {
@@ -716,6 +741,7 @@ class AgamInterpreter {
         });
         this.outputFn(str);
       },
+      print_int: (n) => this.outputFn(String(n)),
       Tensor: {
         from_data: (shape, data) => new AgamTensor(shape, data)
       },
@@ -915,6 +941,13 @@ class AgamInterpreter {
       for (const stmt of block.body) {
         if (stmt.type === 'LetStatement') {
           localEnv[stmt.name] = evalExpr(stmt.init, localEnv);
+        } else if (stmt.type === 'AssignmentStatement') {
+          localEnv[stmt.name] = evalExpr(stmt.expr, localEnv);
+        } else if (stmt.type === 'WhileStatement') {
+          let safety = 0;
+          while (evalExpr(stmt.test, localEnv) && safety++ < 1000000) {
+            execBlock(stmt.body, localEnv);
+          }
         } else if (stmt.type === 'ExpressionStatement') {
           evalExpr(stmt.expr, localEnv);
         } else if (stmt.type === 'HandleStatement') {
