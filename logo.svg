@@ -1,118 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
-  <defs>
-    <!-- Background Radial Glow -->
-    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.8"/>
-      <stop offset="100%" stop-color="#0B0F19" stop-opacity="1"/>
-    </radialGradient>
-
-    <!-- Energy Gradients -->
-    <linearGradient id="saffronGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFB347"/>
-      <stop offset="50%" stop-color="#FF7A00"/>
-      <stop offset="100%" stop-color="#E65100"/>
-    </linearGradient>
-
-    <linearGradient id="cyanGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#00E5FF"/>
-      <stop offset="50%" stop-color="#00B0FF"/>
-      <stop offset="100%" stop-color="#7C4DFF"/>
-    </linearGradient>
-
-    <linearGradient id="goldTensorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFE082"/>
-      <stop offset="50%" stop-color="#FFB300"/>
-      <stop offset="100%" stop-color="#FF6F00"/>
-    </linearGradient>
-
-    <!-- Neon Glow Filters -->
-    <filter id="neonGlowSaffron" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur1"/>
-      <feGaussianBlur in="SourceGraphic" stdDeviation="24" result="blur2"/>
-      <feMerge>
-        <feMergeNode in="blur2"/>
-        <feMergeNode in="blur1"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-
-    <filter id="neonGlowCyan" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur1"/>
-      <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur2"/>
-      <feMerge>
-        <feMergeNode in="blur2"/>
-        <feMergeNode in="blur1"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
-
-  <!-- Background Base -->
-  <rect width="800" height="800" rx="160" fill="url(#bgGlow)"/>
-  
-  <!-- Outer Sacred Geometry Ring -->
-  <circle cx="400" cy="400" r="320" fill="none" stroke="url(#cyanGrad)" stroke-width="2.5" stroke-dasharray="8 12" opacity="0.4"/>
-  <circle cx="400" cy="400" r="280" fill="none" stroke="url(#saffronGrad)" stroke-width="1.5" opacity="0.6"/>
-
-  <!-- Hyper-Dimensional Tensor Core Coordinate Axes -->
-  <g opacity="0.35">
-    <line x1="400" y1="80" x2="400" y2="720" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="4 8"/>
-    <line x1="80" y1="400" x2="720" y2="400" stroke="#FFB300" stroke-width="1.5" stroke-dasharray="4 8"/>
-    <line x1="174" y1="174" x2="626" y2="626" stroke="#7C4DFF" stroke-width="1.5" stroke-dasharray="4 8"/>
-    <line x1="174" y1="626" x2="626" y2="174" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="4 8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#0D0509" />
+  <g transform="translate(-100.7, 7.2) scale(0.33)">
+    <g fill="#E85F6F">
+      <path d="M543.563 626.39C588.407 625.772 622.031 642.562 652.863 674.131C551.874 776.505 565.201 955.852 645.726 1066.67C726.427 1177.73 847.721 1232.08 979.842 1254.98C960.105 1260.45 931.518 1262.32 911.045 1263.86C673.636 1273.66 420.206 1119.38 403.229 866.345C396.649 768.284 424.284 634.571 543.563 626.39Z" />
+      <path d="M762.697 638.374C824.343 632.096 871.653 678.131 889.52 733.545C841.13 748.987 806.435 770.172 776.092 812.057C738.667 864.431 727.811 929.216 738.436 991.857C754.142 1084.45 813.662 1158.28 893.047 1205.46C900.448 1209.85 909.221 1213.35 916.147 1218.27L914.778 1218.77C847.978 1205.61 785.276 1176.72 731.864 1134.5C612.834 1039.4 566.466 880.696 635.638 741.237C662.173 687.738 700.646 644.848 762.697 638.374Z" />
+      <path d="M942.716 1209.91C842.068 1170.54 765.409 1092.22 753.471 981.008C747.268 923.227 762.141 861.138 798.863 815.436C832.318 773.801 898.565 736.87 946.372 778.343C968.819 797.752 977.1 822.412 979.31 851.222C975.524 851.805 971.755 852.491 968.006 853.278C869.878 874.584 810.647 954.058 833.034 1053.53C847.75 1118.91 890.687 1169.28 945.872 1204.77C944.806 1206.64 943.882 1208.12 942.716 1209.91Z" />
+    </g>
+    <g fill="#FFFFFF">
+      <path d="M 1023.94,219.6 L 1026.09,224.5 C 1025.83,242.2 1027.92,260.2 1027.81,277.4 C 1032.8,395.6 1038.92,513.8 1046.17,631.9 C 1048.72,674.8 1051.77,717.6 1055.32,760.4 C 1058.4,799.7 1064.04,893.3 1082.33,925.5 C 1068.0,1050.0 1046.0,1180.0 1024.0,1260.0 C 1002.0,1180.0 980.0,1050.0 966.92,926.7 C 984.94,887.7 987.05,841.3 990.58,799.0 C 993.62,762.0 996.48,724.9 999.13,687.9 C 1009.06,551.2 1016.75,414.3 1022.18,277.3 C 1022.25,258.5 1023.73,238.8 1023.94,219.6 Z" />
+    </g>
+    <g fill="#D9A56C">
+      <path d="M1745.9 308.24C1752.42 303.198 1759.55 297.435 1766.23 292.721C1764.96 397.184 1716.04 489.015 1642.56 561.168C1613.06 590.134 1592.21 604.125 1560.39 628.592C1477.11 692.629 1388.28 749.067 1302.14 809.219C1286.26 820.308 1270.09 831.082 1254.22 842.21C1251 844.463 1237.14 856.529 1235.19 857.36C1232.37 860.075 1229.2 863.311 1226.15 865.677C1175.77 916.134 1141.63 961.111 1114.01 1027.88C1106.76 1045.41 1098.4 1067.19 1094.07 1085.57C1088.63 1084.09 1090.58 1082.44 1090.44 1076.25C1094.31 1054.98 1097.02 1030.28 1100.52 1008.47C1110.3 947.61 1121.23 888.636 1144.13 831.18L1146.61 824.912C1151.71 812.94 1155.99 804.435 1162.22 793.221C1164.51 788.501 1166.92 784.738 1169.67 780.306C1190.41 742.132 1223.29 715.515 1256.6 689.262L1311.21 645.923L1393 580.922C1407.22 569.618 1424.82 554.882 1439.31 544.514L1441.85 542.811C1443.71 540.722 1443.32 541.224 1445.75 539.633C1448.97 536.441 1450.96 535.153 1454.71 532.507L1455.84 531.697C1460.32 527.335 1462.82 525.627 1467.83 522.108C1470.93 518.06 1552.15 454.715 1557.89 451.623C1562.74 447.13 1564.45 445.865 1569.86 442.207C1570.06 441.909 1571.56 440.772 1571.9 440.501C1575.91 436.894 1578.49 435.102 1582.84 432.09C1584.91 429.622 1589.43 426.689 1592.19 424.717C1595.17 421.997 1597.48 420.436 1600.8 418.099C1602.68 415.577 1625.76 398.874 1629.28 396.499L1631.86 394.773C1635.18 391.196 1679.16 358.491 1686.24 353.564C1700.91 343.353 1724.34 323.419 1737.93 314.385C1740.06 312.49 1743.55 310.017 1745.9 308.24Z" />
+      <path d="M1704.73 585.318C1700.23 606.366 1695.2 626.025 1686.95 646.091C1654.25 725.611 1590.52 784.623 1519.8 830.711C1491.4 849.218 1462.57 862.538 1432.56 878.004C1390.01 899.802 1347.63 921.927 1305.42 944.378C1272.89 961.678 1239.44 978.122 1209.97 1000.38C1171.36 1029.54 1139.54 1063.14 1115.92 1105.67C1114.07 1104.4 1112.67 1103.34 1110.94 1101.93C1113.11 1097.4 1119.44 1076.77 1121.41 1070.47C1128.7 1047.22 1152.57 985.76 1168.3 968.619L1169.94 965.985C1171.5 962.498 1171.65 962.523 1174.05 959.77C1177.98 953.215 1181 949.407 1185.76 943.367C1226.79 883.226 1313.51 835.961 1373.19 797.63C1389.93 786.874 1414.76 769.588 1431.27 760.462L1433.96 758.89C1439.64 753.965 1469.23 735.9 1476.87 731.002L1566.97 672.782L1574.8 668.163C1581.51 662.668 1611.06 644.749 1619.93 639.119C1648.02 620.902 1676.29 602.968 1704.73 585.318Z" />
+      <path d="M1466.98 886.247C1476.22 881.009 1490.73 874.81 1500.88 870.078L1567.97 838.955C1579.74 833.475 1591.41 827.771 1602.97 821.846C1607.8 819.388 1618.09 813.717 1622.77 811.895C1581.84 908.757 1493.34 979.514 1397.63 1018.46C1265.13 1072.38 1156.72 1079.89 1090.62 1226.26C1089.75 1224.88 1088.9 1223.48 1088.07 1222.06C1094.78 1198.51 1103.58 1168.61 1114.1 1146.77C1115.33 1143.67 1117.15 1140 1118.58 1136.92C1121.24 1128.16 1139.36 1098.36 1145.42 1090.69C1148.31 1085.34 1154.52 1077.46 1158.47 1072.77C1161.57 1068.16 1165.55 1064.04 1169.28 1059.88L1173.68 1055.15C1179.7 1048.49 1186.24 1042.33 1193.25 1036.73C1195.35 1034.63 1198.29 1032.25 1200.61 1030.27C1233.2 997.41 1337.56 950.309 1381.12 927.554C1395.36 920.115 1441.84 897.149 1456.19 891.315C1459.38 889.275 1463.44 887.745 1466.98 886.247Z" />
+    </g>
   </g>
-
-  <!-- Outer Isometric Hexagonal Tensor Frame -->
-  <polygon points="400,140 625,270 625,530 400,660 175,530 175,270" 
-           fill="none" 
-           stroke="url(#cyanGrad)" 
-           stroke-width="7" 
-           stroke-linejoin="round"
-           filter="url(#neonGlowCyan)"
-           opacity="0.85"/>
-
-  <!-- Inner Inverted Golden Hexagram Layer -->
-  <polygon points="400,200 573,300 573,500 400,600 227,500 227,300" 
-           fill="none" 
-           stroke="url(#saffronGrad)" 
-           stroke-width="5" 
-           stroke-linejoin="round"
-           filter="url(#neonGlowSaffron)"
-           opacity="0.9"/>
-
-  <!-- Central Indic 'A' (अ) Tensor Monad & Sri Yantra Knot -->
-  <!-- Stylized modern Sanskrit 'अ' fused with infinite loop -->
-  <g filter="url(#neonGlowSaffron)">
-    <!-- Top Bar (Shirorekha) with quantum end-caps -->
-    <path d="M 280 260 L 520 260" stroke="url(#goldTensorGrad)" stroke-width="14" stroke-linecap="round"/>
-    
-    <!-- Central Vertical Spine -->
-    <path d="M 450 260 L 450 540" stroke="url(#goldTensorGrad)" stroke-width="14" stroke-linecap="round"/>
-
-    <!-- Left Upper Arc (Upper curve of 'अ') -->
-    <path d="M 330 310 C 390 300 420 350 420 380 C 420 410 380 430 350 430" 
-          fill="none" stroke="url(#saffronGrad)" stroke-width="14" stroke-linecap="round"/>
-
-    <!-- Left Lower Arc (Lower curve of 'अ') sweeping into infinity loop -->
-    <path d="M 350 430 C 400 430 430 470 430 510 C 430 550 380 570 320 550" 
-          fill="none" stroke="url(#saffronGrad)" stroke-width="14" stroke-linecap="round"/>
-
-    <!-- Horizontal Connective Bridge -->
-    <path d="M 390 430 L 450 430" stroke="url(#goldTensorGrad)" stroke-width="12" stroke-linecap="round"/>
-
-    <!-- Right Flanking Accent Curve (Avagraha Harmonic) -->
-    <path d="M 480 340 C 520 370 520 430 480 460" 
-          fill="none" stroke="url(#cyanGrad)" stroke-width="10" stroke-linecap="round" filter="url(#neonGlowCyan)"/>
-  </g>
-
-  <!-- High-Dimensional Tensor Nodes (Hexagon Vertices) -->
-  <circle cx="400" cy="140" r="12" fill="#00E5FF" filter="url(#neonGlowCyan)"/>
-  <circle cx="625" cy="270" r="12" fill="#7C4DFF" filter="url(#neonGlowCyan)"/>
-  <circle cx="625" cy="530" r="12" fill="#FF7A00" filter="url(#neonGlowSaffron)"/>
-  <circle cx="400" cy="660" r="12" fill="#FFB300" filter="url(#neonGlowSaffron)"/>
-  <circle cx="175" cy="530" r="12" fill="#00E5FF" filter="url(#neonGlowCyan)"/>
-  <circle cx="175" cy="270" r="12" fill="#00B0FF" filter="url(#neonGlowCyan)"/>
-
-  <!-- Core Quantum Singularity Center Dot -->
-  <circle cx="400" cy="400" r="7" fill="#FFFFFF" filter="url(#neonGlowCyan)"/>
 </svg>
