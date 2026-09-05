@@ -995,10 +995,48 @@ document.addEventListener('DOMContentLoaded', () => {
     syntaxTimer = setTimeout(checkSyntax, 250);
   });
 
-  // Example Switching
+  const TOUR_GUIDES = {
+    hello: {
+      title: "01 • Welcome to Agam",
+      body: "Agam combines high-level ergonomics with low-level systems control. Write native AI architectures with compile-time mathematical guarantees."
+    },
+    tensor: {
+      title: "02 • Shape-Aware Tensors & ML",
+      body: "Tensors have static shapes checked at compile time. Catch dimension mismatches during build rather than runtime."
+    },
+    gpu: {
+      title: "03 • Hardware Tile Matmul (@gpu)",
+      body: "Compile functions directly to SPIR-V, Vulkan, and CUDA cooperative matrix targets without switching languages."
+    },
+    probabilistic: {
+      title: "04 • Bayesian Inference & MCMC",
+      body: "Native probabilistic primitives: sample from distributions, condition on observations, and run Metropolis-Hastings MCMC."
+    },
+    ui: {
+      title: "05 • Declarative UI & A2UI",
+      body: "Agent-to-User reactive protocol. Stream synthesized Bento Box component trees directly from agent pipelines into the DOM."
+    },
+    effects: {
+      title: "06 • Algebraic Effects & Handlers",
+      body: "Decouple computational logic from side-effects. Perform effects and resume executions without colored functions."
+    },
+    benchmarks: {
+      title: "07 • Benchmark Suite & Matrix",
+      body: "Empirical benchmarking with zero-overhead runtime metrics verified against Clang -O3 and rustc."
+    }
+  };
+
+  // Example Switching via Dropdown
   if (exampleSelect) {
     exampleSelect.addEventListener('change', (e) => {
       const key = e.target.value;
+      tourButtons.forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-lesson') === key);
+      });
+      if (TOUR_GUIDES[key]) {
+        guideTitle.textContent = TOUR_GUIDES[key].title;
+        guideBody.textContent = TOUR_GUIDES[key].body;
+      }
       if (EXAMPLES[key]) {
         codeEditor.value = EXAMPLES[key];
         checkSyntax();
@@ -1007,7 +1045,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Tour Item Clicks
+  // Tour Item Clicks (Sidebar)
   tourButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       tourButtons.forEach(b => b.classList.remove('active'));
@@ -1019,21 +1057,28 @@ document.addEventListener('DOMContentLoaded', () => {
         guideBody.textContent = TOUR_GUIDES[lesson].body;
       }
 
-      const map = {
-        intro: 'hello',
-        tensors: 'tensor',
-        gpu: 'gpu',
-        bayesian: 'probabilistic',
-        ui: 'ui',
-        benchmarks: 'benchmarks'
-      };
-
-      const exampleKey = map[lesson] || 'hello';
-      if (exampleSelect) exampleSelect.value = exampleKey;
-      if (EXAMPLES[exampleKey]) {
-        codeEditor.value = EXAMPLES[exampleKey];
+      if (exampleSelect) exampleSelect.value = lesson;
+      if (EXAMPLES[lesson]) {
+        codeEditor.value = EXAMPLES[lesson];
         checkSyntax();
         runRealCompiler();
+      }
+    });
+  });
+
+  // ── Documentation Hub Tabs ──
+  const docTabButtons = document.querySelectorAll('.docs-tab-btn');
+  const docPanels = document.querySelectorAll('.docs-panel');
+  docTabButtons.forEach(tab => {
+    tab.addEventListener('click', () => {
+      docTabButtons.forEach(b => b.classList.remove('active'));
+      docPanels.forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      const targetId = tab.getAttribute('data-tab');
+      const targetPanel = document.getElementById(targetId);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
       }
     });
   });
